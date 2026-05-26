@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "RCTfxhDflkmkn1uU5RNq4jbUF+zICcnjktPeqXLGzoAvQhB0vYP+hwthgxuzvVzGrOOgQBv/BWHw1JVxTeGS0w==",
+  "dgSpecHash": "B8DNrlKhZX0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\konra\\Documents\\Visual Studio 2022\\Projects\\GH_TEMP\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
+  "projectFilePath": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\konra\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
-    "C:\\Users\\konra\\.nuget\\packages\\system.reflection.metadata\\7.0.0\\system.reflection.metadata.7.0.0.nupkg.sha512",
-    "C:\\Users\\konra\\.nuget\\packages\\system.reflection.metadataloadcontext\\7.0.0\\system.reflection.metadataloadcontext.7.0.0.nupkg.sha512"
+    "C:\\Users\\thoma\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
+    "C:\\Users\\thoma\\.nuget\\packages\\system.reflection.metadata\\7.0.0\\system.reflection.metadata.7.0.0.nupkg.sha512",
+    "C:\\Users\\thoma\\.nuget\\packages\\system.reflection.metadataloadcontext\\7.0.0\\system.reflection.metadataloadcontext.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

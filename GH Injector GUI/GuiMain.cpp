@@ -30,6 +30,9 @@ GuiMain::GuiMain(QWidget * parent)
 	framelessParent->setTitleBar(false);
 	framelessParent->setContent(this);
 
+	framelessParent->setResizeHorizontal(true);
+	framelessParent->setResizeVertical(true);
+
 	g_Console = new(std::nothrow) DebugConsole(framelessParent);
 	if (framelessParent == Q_NULLPTR)
 	{
@@ -1667,25 +1670,30 @@ void GuiMain::update_height()
 	bool b1 = ui.fr_cloak->isVisible();
 	bool b2 = ui.fr_adv->isVisible();
 
-	if (!b1 && !b2)
-	{
-		framelessParent->setFixedHeight(Height_small);
-	}
-	else if (b1 && !b2)
-	{
-		framelessParent->setFixedHeight(Height_medium_s);
-	}
-	else if (!b1 && b2)
-	{
-		framelessParent->setFixedHeight(Height_medium_b);
-	}
-	else
-	{
-		framelessParent->setFixedHeight(Height_big);
+	int targetHeight = Height_small;
+
+	if (!b1 && !b2)         targetHeight = Height_small;
+	else if (b1 && !b2)     targetHeight = Height_medium_s;
+	else if (!b1 && b2)     targetHeight = Height_medium_b;
+	else                    targetHeight = Height_big;
+
+	// Use setMinimumHeight to allow expanding, not fixed height
+	framelessParent->setMinimumHeight(targetHeight);
+
+	// Resize to the new minimum if the current window is too small
+	if (framelessParent->height() < targetHeight) {
+		framelessParent->resize(framelessParent->width(), targetHeight);
 	}
 
-	//force window update beacause it doesn't update properly when decreasing the size after launch but all the other times???
+	// Force window update
 	framelessParent->move(framelessParent->pos());
+
+	t_Update_DragDrop.start(Height_change_delay);
+
+	if (this->layout()) {
+		this->layout()->activate(); // Forces the layout to re-calculate positions
+	}
+	this->adjustSize(); // Tells the window to shrink-wrap to the new layout
 
 	t_Update_DragDrop.start(Height_change_delay);
 }

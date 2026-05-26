@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\konra\\Documents\\Visual Studio 2022\\Projects\\GH_TEMP\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj": {}
+    "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj": {}
   },
   "projects": {
-    "C:\\Users\\konra\\Documents\\Visual Studio 2022\\Projects\\GH_TEMP\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj": {
+    "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj": {
       "version": "4.8.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\konra\\Documents\\Visual Studio 2022\\Projects\\GH_TEMP\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
+        "projectUniqueName": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
         "projectName": "GH .NET Parser",
-        "projectPath": "C:\\Users\\konra\\Documents\\Visual Studio 2022\\Projects\\GH_TEMP\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
-        "packagesPath": "C:\\Users\\konra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\konra\\Documents\\Visual Studio 2022\\Projects\\GH_TEMP\\GH-Injector-GUI\\GH .NET Parser\\obj\\",
+        "projectPath": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
+        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
+        "outputPath": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\konra\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -30,6 +26,7 @@
         },
         "frameworks": {
           "net7.0": {
+            "framework": "net7.0",
             "targetAlias": "net7.0",
             "projectReferences": {}
           }
@@ -38,10 +35,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net7.0": {
+          "framework": "net7.0",
           "targetAlias": "net7.0",
           "dependencies": {
             "System.Reflection.MetadataLoadContext": {
@@ -65,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

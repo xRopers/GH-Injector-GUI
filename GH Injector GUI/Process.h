@@ -2,6 +2,9 @@
  * Author:       Broihon
  * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
 */
+#include <Windows.h>
+#include <TlHelp32.h>
+
 
 #pragma once
 
