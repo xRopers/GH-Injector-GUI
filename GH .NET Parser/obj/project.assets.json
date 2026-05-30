@@ -2,49 +2,50 @@
   "version": 4,
   "targets": {
     "net10.0": {
-      "System.Reflection.MetadataLoadContext/7.0.0": {
+      "System.Reflection.MetadataLoadContext/10.0.8": {
         "type": "package",
         "compile": {
-          "lib/net7.0/System.Reflection.MetadataLoadContext.dll": {
+          "lib/net10.0/System.Reflection.MetadataLoadContext.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net7.0/System.Reflection.MetadataLoadContext.dll": {
+          "lib/net10.0/System.Reflection.MetadataLoadContext.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/net6.0/_._": {}
+          "buildTransitive/net8.0/_._": {}
         }
       }
     }
   },
   "libraries": {
-    "System.Reflection.MetadataLoadContext/7.0.0": {
-      "sha512": "z9PvtMJra5hK8n+g0wmPtaG7HQRZpTmIPRw5Z0LEemlcdQMHuTD5D7OAY/fZuuz1L9db++QOcDF0gJTLpbMtZQ==",
+    "System.Reflection.MetadataLoadContext/10.0.8": {
+      "sha512": "w9sjhVDe4AKkyswUctVK3oCmZHaA7g+ZUG/xDmzgbsOGxmeRQA6lCQeAh6r75K0lcsLlfBzZXmsNblndyNJhxw==",
       "type": "package",
-      "path": "system.reflection.metadataloadcontext/7.0.0",
+      "path": "system.reflection.metadataloadcontext/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "LICENSE.TXT",
-        "README.md",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
         "buildTransitive/net461/System.Reflection.MetadataLoadContext.targets",
         "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
+        "buildTransitive/net8.0/_._",
         "buildTransitive/netcoreapp2.0/System.Reflection.MetadataLoadContext.targets",
+        "lib/net10.0/System.Reflection.MetadataLoadContext.dll",
+        "lib/net10.0/System.Reflection.MetadataLoadContext.xml",
         "lib/net462/System.Reflection.MetadataLoadContext.dll",
         "lib/net462/System.Reflection.MetadataLoadContext.xml",
-        "lib/net6.0/System.Reflection.MetadataLoadContext.dll",
-        "lib/net6.0/System.Reflection.MetadataLoadContext.xml",
-        "lib/net7.0/System.Reflection.MetadataLoadContext.dll",
-        "lib/net7.0/System.Reflection.MetadataLoadContext.xml",
+        "lib/net8.0/System.Reflection.MetadataLoadContext.dll",
+        "lib/net8.0/System.Reflection.MetadataLoadContext.xml",
+        "lib/net9.0/System.Reflection.MetadataLoadContext.dll",
+        "lib/net9.0/System.Reflection.MetadataLoadContext.xml",
         "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
         "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
-        "system.reflection.metadataloadcontext.7.0.0.nupkg.sha512",
+        "system.reflection.metadataloadcontext.10.0.8.nupkg.sha512",
         "system.reflection.metadataloadcontext.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -52,7 +53,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "System.Reflection.MetadataLoadContext >= 7.0.0"
+      "System.Reflection.MetadataLoadContext >= 10.0.8"
     ]
   },
   "packageFolders": {
@@ -104,7 +105,7 @@
         "dependencies": {
           "System.Reflection.MetadataLoadContext": {
             "target": "Package",
-            "version": "[7.0.0, )"
+            "version": "[10.0.8, )"
           }
         },
         "imports": [
