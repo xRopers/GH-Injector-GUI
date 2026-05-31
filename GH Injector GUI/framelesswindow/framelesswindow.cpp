@@ -1,4 +1,4 @@
-#include "..\pch.h"
+﻿#include "..\pch.h"
 
 /*
 ###############################################################################
@@ -524,7 +524,8 @@ void FramelessWindow::on_closeButton_clicked()
 
 void FramelessWindow::checkBorderDragging(QMouseEvent * event)
 {
-	QPoint globalMousePos = event->globalPos();
+	//QPoint globalMousePos = event->globalPos(); old code, not working with multiple screens
+	QPoint globalMousePos = event->globalPosition().toPoint();
 	if (m_bMousePressed)
 	{
 		QScreen * screen = QGuiApplication::primaryScreen();
@@ -774,7 +775,8 @@ void FramelessWindow::mousePressEvent(QMouseEvent * event)
 	m_bMousePressed = true;
 	m_StartGeometry = this->geometry();
 
-	QPoint globalMousePos = mapToGlobal(QPoint(event->x(), event->y()));
+	//QPoint globalMousePos = mapToGlobal(QPoint(event->x(), event->y())); old code, not working with multiple screens
+	QPoint globalMousePos = mapToGlobal(event->position().toPoint());
 
 	if (leftBorderHit(globalMousePos) && topBorderHit(globalMousePos))
 	{

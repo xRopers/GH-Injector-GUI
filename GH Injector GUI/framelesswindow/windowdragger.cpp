@@ -1,4 +1,4 @@
-#include "..\pch.h"
+﻿#include "..\pch.h"
 
 /*
 ###############################################################################
@@ -23,7 +23,8 @@ WindowDragger::WindowDragger(QWidget * parent) : QWidget(parent)
 void WindowDragger::mousePressEvent(QMouseEvent * event)
 {
 	mousePressed	= true;
-	mousePos		= event->globalPos();
+	//mousePos		= event->globalPos(); old code, but it causes a bug when the window is moved to another monitor with different resolution
+	mousePos = event->globalPosition().toPoint();
 
 	QWidget * parent = parentWidget();
 	if (parent)
@@ -43,7 +44,8 @@ void WindowDragger::mouseMoveEvent(QMouseEvent * event)
 
 	if (parent && mousePressed)
 	{
-		parent->move(wndPos + (event->globalPos() - mousePos));
+		//parent->move(wndPos + (event->globalPos() - mousePos)); old code, but it causes a bug when the window is moved to another monitor with different resolution
+		parent->move(wndPos + (event->globalPosition().toPoint() - mousePos));
 	}		
 }
 
