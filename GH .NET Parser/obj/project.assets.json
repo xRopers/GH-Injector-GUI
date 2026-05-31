@@ -62,11 +62,11 @@
   "project": {
     "version": "4.8.0",
     "restore": {
-      "projectUniqueName": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
+      "projectUniqueName": "E:\\GH Injector\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
       "projectName": "GH .NET Parser",
-      "projectPath": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
+      "projectPath": "E:\\GH Injector\\GH-Injector-GUI\\GH .NET Parser\\GH .NET Parser.csproj",
       "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-      "outputPath": "E:\\GH Injetor\\GH-Injector-GUI\\GH .NET Parser\\obj\\",
+      "outputPath": "E:\\GH Injector\\GH-Injector-GUI\\GH .NET Parser\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config",
