@@ -1,6 +1,6 @@
-/*
+ï»¿/*
  * Author:       Broihon
- * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
+ * Copyright:    Guided Hackingï¿½ ï¿½ 2012-2023 Guided Hacking LLC
 */
 
 #pragma once
@@ -47,13 +47,13 @@
 
 #pragma warning(pop)
 
-#if (QT_VERSION_CHECK(5,15,8) < QT_VERSION)
-#error Invalid Qt version. Only Qt5.15.x is supported.
-#endif
-
-#if (QT_VERSION_CHECK(5,15,0) > QT_VERSION)
-#error Invalid Qt version. Only Qt5.15.x is supported.
-#endif
+//#if (QT_VERSION_CHECK(5,15,8) < QT_VERSION)
+//#error Invalid Qt version. Only Qt5.15.x is supported.
+//#endif
+//
+//#if (QT_VERSION_CHECK(5,15,0) > QT_VERSION)
+//#error Invalid Qt version. Only Qt5.15.x is supported.
+//#endif
 
 void __declspec(noreturn) THROW(std::string error_msg);
 

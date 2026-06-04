@@ -1710,7 +1710,7 @@ void GuiMain::save_settings()
 	g_print(" Saving settings\n");
 
 	QSettings settings(QString::fromStdString(GH_SETTINGS_INIA), QSettings::IniFormat);
-	settings.setIniCodec("UTF-8");
+	//settings.setIniCodec("UTF-8");
 
 	settings.beginWriteArray("FILES");
 
@@ -1847,7 +1847,7 @@ void GuiMain::load_settings()
 	}
 
 	QSettings settings(QString::fromStdString(GH_SETTINGS_INIA), QSettings::IniFormat);
-	settings.setIniCodec("UTF-8");
+	//settings.setIniCodec("UTF-8");
 
 	int fileSize = settings.beginReadArray("FILES");
 	for (int i = 0; i < fileSize; ++i)
@@ -2351,7 +2351,8 @@ void GuiMain::btn_remove_file()
 			CloseHandle(hFile);
 		}
 
-		if (i->text(FILE_LIST_IDX_FLAG) != FILE_LIST_FLAG_NATIVE)
+		//if (i->text(FILE_LIST_IDX_FLAG) != FILE_LIST_FLAG_NATIVE) old code, removed because native files can also be .NET
+		if (i->text(FILE_LIST_IDX_FLAG) != QLatin1String(FILE_LIST_FLAG_NATIVE))
 		{
 			b_ok = false;
 

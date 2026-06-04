@@ -154,7 +154,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
-    <QtInstall>5.15.2_x64</QtInstall>
+    <QtInstall>6.11.1_msvc2022_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="QtSettings">
     <QtInstall>5.15.2_x86</QtInstall>
@@ -263,12 +263,7 @@
     </ClCompile>
     <Link />
     <PostBuildEvent>
-      <Command>xcopy /y $(QTDIR)\bin\Qt5Cored.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Guid.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Widgetsd.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Cored.dll "$(OutDir)"
-xcopy /y $(QTDIR)\plugins\platforms\qwindowsd.dll "$(OutDir)platforms\"
-xcopy /y $(QTDIR)\plugins\imageformats\qjpegd.dll "$(OutDir)imageformats\"</Command>
+      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
     </PostBuildEvent>
     <Link>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
@@ -286,12 +281,7 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpegd.dll "$(OutDir)imageformats\"</Comm
     </ClCompile>
     <Link />
     <PostBuildEvent>
-      <Command>xcopy /y $(QTDIR)\bin\Qt5Cored.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Guid.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Widgetsd.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Cored.dll "$(OutDir)"
-xcopy /y $(QTDIR)\plugins\platforms\qwindowsd.dll "$(OutDir)platforms\"
-xcopy /y $(QTDIR)\plugins\imageformats\qjpegd.dll "$(OutDir)imageformats\"</Command>
+      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
     </PostBuildEvent>
     <Link>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
@@ -312,12 +302,9 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpegd.dll "$(OutDir)imageformats\"</Comm
     </ClCompile>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy /y $(QTDIR)\bin\Qt5Core.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Gui.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Widgets.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Core.dll "$(OutDir)"
-xcopy /y $(QTDIR)\plugins\platforms\qwindows.dll "$(OutDir)platforms\"
-xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Command>
+      <Command>set PATH=C:\Qt\6.11.1\msvc2022_64\bin;%PATH%
+set VCINSTALLDIR=C:\Program Files\Microsoft Visual Studio\18\Community\VC
+"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" --verbose 1 "$(TargetDir)$(TargetName).exe"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -335,12 +322,7 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
     </ClCompile>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy /y $(QTDIR)\bin\Qt5Core.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Gui.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Widgets.dll "$(OutDir)"
-xcopy /y $(QTDIR)\bin\Qt5Core.dll "$(OutDir)"
-xcopy /y $(QTDIR)\plugins\platforms\qwindows.dll "$(OutDir)platforms\"
-xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Command>
+      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static|x64'">
@@ -356,6 +338,9 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
       <LanguageStandard_C>Default</LanguageStandard_C>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static|Win32'">
     <Link>
@@ -370,6 +355,9 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
       <LanguageStandard_C>Default</LanguageStandard_C>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DebugConsole.cpp" />
