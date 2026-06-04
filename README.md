@@ -1,6 +1,6 @@
 # Qt GH DLL Injector Graphical User Interface
 
-This repository hosts a customized frontend for the official [Guided Hacking DLL Injector](https://guidedhacking.com). This specific version is fully compatible with MSVC 2019, MSVC 2022, MSVC 2026, and Qt version 5.15.2.
+This repository hosts a customized frontend for the official [Guided Hacking DLL Injector](https://guidedhacking.com). This specific version is fully compatible with MSVC 2019, MSVC 2022, MSVC 2026, and Qt version 6.11.1 and updated to DOTNet 10.
 
 ## 📌 Project History & Evolution
 The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage](https://guidedhacking.com) and [Multikill](https://github.com) developed the initial framework for this modern Qt-based interface. Over the subsequent five years, Broihon has continually updated, maintained, and enhanced the codebase.
