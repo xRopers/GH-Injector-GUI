@@ -7,18 +7,18 @@
 
 #include "GuiMain.h"
 
-const int GuiMain::EXIT_CODE_CLOSE			= 0;
-const int GuiMain::EXIT_CODE_REBOOT			= -1;
-const int GuiMain::EXIT_CODE_UPDATE			= -2;
-const int GuiMain::EXIT_CODE_START_NATIVE	= -3;
+const int GuiMain::EXIT_CODE_CLOSE = 0;
+const int GuiMain::EXIT_CODE_REBOOT = -1;
+const int GuiMain::EXIT_CODE_UPDATE = -2;
+const int GuiMain::EXIT_CODE_START_NATIVE = -3;
 
-const int GuiMain::Height_small			= 410;
-const int GuiMain::Height_medium_s		= 480;
-const int GuiMain::Height_medium_b		= 593;
-const int GuiMain::Height_big			= 643;
-const int GuiMain::Height_change_delay	= 100;
+const int GuiMain::Height_small = 410;
+const int GuiMain::Height_medium_s = 480;
+const int GuiMain::Height_medium_b = 593;
+const int GuiMain::Height_big = 643;
+const int GuiMain::Height_change_delay = 100;
 
-GuiMain::GuiMain(QWidget * parent)
+GuiMain::GuiMain(QWidget* parent)
 	: QMainWindow(parent)
 {
 	framelessParent = new(std::nothrow) FramelessWindow();
@@ -30,9 +30,6 @@ GuiMain::GuiMain(QWidget * parent)
 	framelessParent->setTitleBar(false);
 	framelessParent->setContent(this);
 
-	framelessParent->setResizeHorizontal(true);
-	framelessParent->setResizeVertical(true);
-
 	g_Console = new(std::nothrow) DebugConsole(framelessParent);
 	if (framelessParent == Q_NULLPTR)
 	{
@@ -42,7 +39,7 @@ GuiMain::GuiMain(QWidget * parent)
 	drag_drop = nullptr;
 
 	current_version = GH_INJ_GUI_VERSIONW;
-	newest_version	= GH_INJ_GUI_VERSIONW;
+	newest_version = GH_INJ_GUI_VERSIONW;
 
 	auto root_path = QCoreApplication::applicationDirPath();
 	root_path.replace("/", "\\");
@@ -52,7 +49,7 @@ GuiMain::GuiMain(QWidget * parent)
 	{
 		exit(GuiMain::EXIT_CODE_START_NATIVE);
 	}
-	
+
 	if (!ProcessIdToSessionId(GetCurrentProcessId(), &g_SessionID))
 	{
 		THROW("Failed to resolve session identifier\n");
@@ -123,7 +120,7 @@ GuiMain::GuiMain(QWidget * parent)
 	}
 
 	InjLib.SetRawPrintCallback(g_print_to_console_raw_external);
-	
+
 	g_Console->update_external();
 
 	if (!SetDebugPrivilege(true))
@@ -142,11 +139,11 @@ GuiMain::GuiMain(QWidget * parent)
 
 	t_Auto_Inj.setInterval(200);
 	t_Update_Proc.setInterval(250);
-	
-	pxm_banner	= QPixmap(":/GuiMain/gh_resource/GH Banner.png");
-	pxm_lul		= QPixmap(":/GuiMain/gh_resource/LUL Icon.png");
+
+	pxm_banner = QPixmap(":/GuiMain/gh_resource/GH Banner.png");
+	pxm_lul = QPixmap(":/GuiMain/gh_resource/LUL Icon.png");
 	pxm_generic = QPixmap(":/GuiMain/gh_resource/Generic Icon.png");
-	pxm_error	= QPixmap(":/GuiMain/gh_resource/Error Icon.png");
+	pxm_error = QPixmap(":/GuiMain/gh_resource/Error Icon.png");
 
 	if (pxm_banner.isNull() || pxm_lul.isNull() || pxm_generic.isNull() || pxm_error.isNull())
 	{
@@ -154,7 +151,7 @@ GuiMain::GuiMain(QWidget * parent)
 	}
 
 	ui.lbl_img->setPixmap(pxm_banner);
-	
+
 	ui.lbl_proc_icon->setStyleSheet("background: transparent");
 
 	ui.cmb_proc->setModel(&mod_CmbProcNameModel);
@@ -164,7 +161,7 @@ GuiMain::GuiMain(QWidget * parent)
 	ui.btn_minimize->setFixedHeight(banner_height / 2);
 	ui.btn_close->setFixedWidth(50);
 	ui.btn_minimize->setFixedWidth(50);
-		
+
 	ui.tree_files->setSizeAdjustPolicy(QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored);
 	ui.tree_files->setColumnWidth(FILE_LIST_IDX_CHECKBOX, 50);
 	ui.tree_files->setColumnWidth(FILE_LIST_IDX_NAME, 135);
@@ -180,7 +177,7 @@ GuiMain::GuiMain(QWidget * parent)
 	ui.btn_console->setIcon(QIcon(":/GuiMain/gh_resource/Console.ico"));
 
 	QApplication::instance()->installEventFilter(this);
-	
+
 	rev_NumbersOnly.setRegularExpression(QRegularExpression("[0-9]+"));
 	ui.txt_pid->setValidator(&rev_NumbersOnly);
 
@@ -189,52 +186,52 @@ GuiMain::GuiMain(QWidget * parent)
 		this->statusBar()->hide();
 	}
 
-	onReset			= false;
-	onMove			= false;
-	consoleOpen		= true;
+	onReset = false;
+	onMove = false;
+	consoleOpen = true;
 	tooltipsEnabled = true;
-	setupDone		= false;
-	updateCheck		= true;
+	setupDone = false;
+	updateCheck = true;
 
 	mouse_pos = { 0, 0 };
 
 	// Window
-	connect(ui.btn_close,		SIGNAL(clicked()), this, SLOT(btn_close_clicked()));
-	connect(ui.btn_minimize,	SIGNAL(clicked()), this, SLOT(btn_minimize_clicked()));
+	connect(ui.btn_close, SIGNAL(clicked()), this, SLOT(btn_close_clicked()));
+	connect(ui.btn_minimize, SIGNAL(clicked()), this, SLOT(btn_minimize_clicked()));
 
 	// Settings
-	connect(ui.rb_proc,		SIGNAL(clicked()), this, SLOT(rb_process_set()));
-	connect(ui.rb_pid,		SIGNAL(clicked()), this, SLOT(rb_pid_set()));
-	connect(ui.btn_proc,	SIGNAL(clicked()), this, SLOT(btn_pick_process_click()));
+	connect(ui.rb_proc, SIGNAL(clicked()), this, SLOT(rb_process_set()));
+	connect(ui.rb_pid, SIGNAL(clicked()), this, SLOT(rb_pid_set()));
+	connect(ui.btn_proc, SIGNAL(clicked()), this, SLOT(btn_pick_process_click()));
 
 	// Auto, Reset, Color
-	connect(ui.cb_auto,		SIGNAL(clicked()), this, SLOT(cb_auto_inject()));
-	connect(ui.btn_reset,	SIGNAL(clicked()), this, SLOT(btn_reset_settings()));
-	connect(ui.btn_hooks,	SIGNAL(clicked()), this, SLOT(btn_hook_scan_click()));
+	connect(ui.cb_auto, SIGNAL(clicked()), this, SLOT(cb_auto_inject()));
+	connect(ui.btn_reset, SIGNAL(clicked()), this, SLOT(btn_reset_settings()));
+	connect(ui.btn_hooks, SIGNAL(clicked()), this, SLOT(btn_hook_scan_click()));
 
 	// Method, Cloaking, Advanced
-	connect(ui.cmb_load,		SIGNAL(currentIndexChanged(int)),	this, SLOT(cmb_load_change(int)));
-	connect(ui.cmb_create,		SIGNAL(currentIndexChanged(int)),	this, SLOT(cmb_create_change(int)));
-	connect(ui.cb_main,			SIGNAL(clicked()),					this, SLOT(cb_main_clicked()));
-	connect(ui.cb_protection,	SIGNAL(clicked()),					this, SLOT(cb_page_protection_clicked()));
-	connect(ui.cmb_peh,			SIGNAL(currentIndexChanged(int)),	this, SLOT(cmb_peh_change(int)));
-	connect(ui.cb_cloak,		SIGNAL(clicked()),					this, SLOT(cb_cloak_clicked()));
-	connect(ui.cb_hijack,		SIGNAL(clicked()),					this, SLOT(cb_hijack_clicked()));
+	connect(ui.cmb_load, SIGNAL(currentIndexChanged(int)), this, SLOT(cmb_load_change(int)));
+	connect(ui.cmb_create, SIGNAL(currentIndexChanged(int)), this, SLOT(cmb_create_change(int)));
+	connect(ui.cb_main, SIGNAL(clicked()), this, SLOT(cb_main_clicked()));
+	connect(ui.cb_protection, SIGNAL(clicked()), this, SLOT(cb_page_protection_clicked()));
+	connect(ui.cmb_peh, SIGNAL(currentIndexChanged(int)), this, SLOT(cmb_peh_change(int)));
+	connect(ui.cb_cloak, SIGNAL(clicked()), this, SLOT(cb_cloak_clicked()));
+	connect(ui.cb_hijack, SIGNAL(clicked()), this, SLOT(cb_hijack_clicked()));
 
 	// Files
-	connect(ui.btn_add,		SIGNAL(clicked()),									this, SLOT(btn_add_file_dialog()));
-	connect(ui.btn_inject,	SIGNAL(clicked()),									this, SLOT(btn_delay_inject()));
-	connect(ui.btn_remove,	SIGNAL(clicked()),									this, SLOT(btn_remove_file()));
-	connect(ui.tree_files,	SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),	this, SLOT(tree_select_file()));
+	connect(ui.btn_add, SIGNAL(clicked()), this, SLOT(btn_add_file_dialog()));
+	connect(ui.btn_inject, SIGNAL(clicked()), this, SLOT(btn_delay_inject()));
+	connect(ui.btn_remove, SIGNAL(clicked()), this, SLOT(btn_remove_file()));
+	connect(ui.tree_files, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(tree_select_file()));
 
 	// Info
-	connect(ui.btn_tooltip,		SIGNAL(clicked()), this, SLOT(btn_tooltip_change()));
-	connect(ui.btn_shortcut,	SIGNAL(clicked()), this, SLOT(btn_generate_shortcut()));
-	connect(ui.btn_help,		SIGNAL(clicked()), this, SLOT(btn_open_help()));
-	connect(ui.btn_version,		SIGNAL(clicked()), this, SLOT(btn_update_clicked()));
-	connect(ui.btn_console,		SIGNAL(clicked()), this, SLOT(btn_open_console()));
-	connect(ui.btn_openlog,		SIGNAL(clicked()), this, SLOT(btn_open_log()));
-	
+	connect(ui.btn_tooltip, SIGNAL(clicked()), this, SLOT(btn_tooltip_change()));
+	connect(ui.btn_shortcut, SIGNAL(clicked()), this, SLOT(btn_generate_shortcut()));
+	connect(ui.btn_help, SIGNAL(clicked()), this, SLOT(btn_open_help()));
+	connect(ui.btn_version, SIGNAL(clicked()), this, SLOT(btn_update_clicked()));
+	connect(ui.btn_console, SIGNAL(clicked()), this, SLOT(btn_open_console()));
+	connect(ui.btn_openlog, SIGNAL(clicked()), this, SLOT(btn_open_log()));
+
 	framelessPicker.setMinimizeButton(false);
 	framelessPicker.setResizeHorizontal(true);
 
@@ -247,7 +244,7 @@ GuiMain::GuiMain(QWidget * parent)
 		THROW("Failed to create process picker window.");
 	}
 
-	gui_Scanner	= new(std::nothrow) GuiScanHook(&framelessScanner, &framelessScanner, &InjLib);
+	gui_Scanner = new(std::nothrow) GuiScanHook(&framelessScanner, &framelessScanner, &InjLib);
 	if (gui_Picker == Q_NULLPTR)
 	{
 		THROW("Failed to create hook scanner window.");
@@ -257,19 +254,19 @@ GuiMain::GuiMain(QWidget * parent)
 	framelessPicker.setContent(gui_Picker);
 	framelessPicker.setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
 	framelessPicker.setWindowModality(Qt::WindowModality::ApplicationModal);
-	
+
 	framelessScanner.setWindowTitle("Scan for hooks");
 	framelessScanner.setContent(gui_Scanner);
 	framelessScanner.setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
 	framelessScanner.setWindowModality(Qt::WindowModality::ApplicationModal);
 
-	auto Drop_Handler = [this](const QString & path)
+	auto Drop_Handler = [this](const QString& path)
 	{
 		add_file_to_list(path, true);
 	};
 
 	current_dpi = framelessParent->logicalDpiX();
-	dragdrop_size	= (int)(30.0f * current_dpi / 96.0f + 0.5f);
+	dragdrop_size = (int)(30.0f * current_dpi / 96.0f + 0.5f);
 	dragdrop_offset = (int)(10.0f * current_dpi / 96.0f + 0.5f);
 
 	drag_drop = new(std::nothrow) DragDropWindow();
@@ -282,19 +279,19 @@ GuiMain::GuiMain(QWidget * parent)
 	drag_drop->SetCallback(Drop_Handler);
 
 	// Process Picker
-	connect(this,		SIGNAL(send_to_picker(ProcessState *, ProcessData *)),	gui_Picker, SLOT(get_from_inj(ProcessState *, ProcessData *)));
+	connect(this, SIGNAL(send_to_picker(ProcessState*, ProcessData*)), gui_Picker, SLOT(get_from_inj(ProcessState*, ProcessData*)));
 	connect(gui_Picker, SIGNAL(send_to_inj()), this, SLOT(get_from_picker()));
 
 	// Scan Hook
-	connect(this,			SIGNAL(send_to_scan_hook(int)),	gui_Scanner,	SLOT(get_from_inj_to_sh(int)));
-	connect(gui_Scanner,	SIGNAL(send_to_inj_sh()),		this,			SLOT(get_from_scan_hook()));
+	connect(this, SIGNAL(send_to_scan_hook(int)), gui_Scanner, SLOT(get_from_inj_to_sh(int)));
+	connect(gui_Scanner, SIGNAL(send_to_inj_sh()), this, SLOT(get_from_scan_hook()));
 
-	connect(&t_Auto_Inj,		SIGNAL(timeout()), this, SLOT(auto_loop_inject()));
-	connect(&t_Delay_Inj,		SIGNAL(timeout()), this, SLOT(inject_file()));
-	connect(&t_Update_Proc,		SIGNAL(timeout()), this, SLOT(update_process()));
-	connect(&t_Update_DragDrop,	SIGNAL(timeout()), this, SLOT(update_after_height_change()));
-	connect(&t_SetUp,			SIGNAL(timeout()), this, SLOT(setup()));
-	connect(&t_Update_Files,	SIGNAL(timeout()), this, SLOT(update_file_list()));	
+	connect(&t_Auto_Inj, SIGNAL(timeout()), this, SLOT(auto_loop_inject()));
+	connect(&t_Delay_Inj, SIGNAL(timeout()), this, SLOT(inject_file()));
+	connect(&t_Update_Proc, SIGNAL(timeout()), this, SLOT(update_process()));
+	connect(&t_Update_DragDrop, SIGNAL(timeout()), this, SLOT(update_after_height_change()));
+	connect(&t_SetUp, SIGNAL(timeout()), this, SLOT(setup()));
+	connect(&t_Update_Files, SIGNAL(timeout()), this, SLOT(update_file_list()));
 
 	ui.fr_cloak->setVisible(false);
 
@@ -330,7 +327,7 @@ GuiMain::GuiMain(QWidget * parent)
 	if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
 	{
 		// Only exists on Win10+
-		auto * cmb_model = qobject_cast<QStandardItemModel *>(ui.cmb_load->model());
+		auto* cmb_model = qobject_cast<QStandardItemModel*>(ui.cmb_load->model());
 		if (cmb_model)
 		{
 			if (ui.cmb_load->currentIndex() == (int)INJECTION_MODE::IM_LdrpLoadDllInternal)
@@ -338,10 +335,10 @@ GuiMain::GuiMain(QWidget * parent)
 				ui.cmb_load->setCurrentIndex((int)INJECTION_MODE::IM_LdrpLoadDll);
 			}
 
-			auto * it = cmb_model->item((int)INJECTION_MODE::IM_LdrpLoadDllInternal);
+			auto* it = cmb_model->item((int)INJECTION_MODE::IM_LdrpLoadDllInternal);
 			it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
-			auto * view = qobject_cast<QListView *>(ui.cmb_load->view());
+			auto* view = qobject_cast<QListView*>(ui.cmb_load->view());
 			if (view != Q_NULLPTR)
 			{
 				view->setRowHidden((int)INJECTION_MODE::IM_LdrpLoadDllInternal, true);
@@ -371,8 +368,8 @@ GuiMain::~GuiMain()
 
 void GuiMain::update_process()
 {
-	auto pid_raw	= ui.txt_pid->text().toULong();
-	auto name_raw	= ui.cmb_proc->currentText();
+	auto pid_raw = ui.txt_pid->text().toULong();
+	auto name_raw = ui.cmb_proc->currentText();
 
 	auto by_pid = ui.rb_pid->isChecked();
 	auto by_name = ui.rb_proc->isChecked();
@@ -526,7 +523,7 @@ void GuiMain::update_proc_icon()
 {
 	int size = ui.btn_proc->height();
 	ui.lbl_proc_icon->setFixedSize(QSize(size, size));
-	
+
 	QPixmap new_icon = QPixmap();
 
 	if (CurrentPID == 1337)
@@ -583,7 +580,7 @@ void GuiMain::update_file_list()
 
 				continue;
 			}
-			
+
 			wchar_t new_path[MAX_PATH * 2]{ 0 };
 			auto ret = GetFinalPathNameByHandleW(hFile, new_path, sizeof(new_path) / sizeof(wchar_t), FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
 			if (!ret || ret && GetLastError() == ERROR_NOT_ENOUGH_MEMORY)
@@ -599,7 +596,7 @@ void GuiMain::update_file_list()
 
 			CloseHandle(hFile);
 
-			const wchar_t * new_path_stripped = new_path + 4; //skip DOS prefix
+			const wchar_t* new_path_stripped = new_path + 4; //skip DOS prefix
 
 			std::wstring s_new_path(new_path_stripped);
 			if (s_new_path.find(L"$Recycle.Bin") != std::string::npos) //detect if file was moved to recycle bin
@@ -643,13 +640,13 @@ void GuiMain::update_file_list()
 					new_item->setText(FILE_LIST_IDX_DOTNET_OPTIONS, dot_net_options);
 					new_item->setText(FILE_LIST_IDX_DOTNET_ARGUMENT, dot_net_argument);
 
-					DotNetOptionsTree * new_tree = nullptr;
+					DotNetOptionsTree* new_tree = nullptr;
 
 					if (!parse_dot_net_data(new_item, new_tree))
 					{
 						g_print("Failed to parse .NET data of:\n%ls\n", new_item->text(FILE_LIST_IDX_NAME).toStdWString().c_str());
 					}
-					
+
 					new_item->setText(FILE_LIST_IDX_DOTNET_PARSER, QString::number(reinterpret_cast<UINT_PTR>(new_tree), 0x10));
 				}
 			}
@@ -672,7 +669,7 @@ void GuiMain::update_file_list()
 			add_file_to_list(q_path, true);
 		}
 	}
-	
+
 	ARCHITECTURE arch;
 	if (ui.rb_proc->isChecked() && proc_data_by_pid.IsValid())
 	{
@@ -734,9 +731,9 @@ void GuiMain::dot_net_options()
 		return;
 	}
 
-	QTreeWidgetItem * item = Q_NULLPTR;
+	QTreeWidgetItem* item = Q_NULLPTR;
 
-	for (const auto & i : list)
+	for (const auto& i : list)
 	{
 		if (i->text(FILE_LIST_IDX_FLAG).toInt() != FILE_LIST_FLAG_NATIVE)
 		{
@@ -767,9 +764,9 @@ void GuiMain::dot_net_options()
 
 	bool b_ok = false;
 #ifdef _WIN64
-	auto parser = reinterpret_cast<DotNetOptionsTree *>(item->text(FILE_LIST_IDX_DOTNET_PARSER).toULongLong(&b_ok, 0x10));
+	auto parser = reinterpret_cast<DotNetOptionsTree*>(item->text(FILE_LIST_IDX_DOTNET_PARSER).toULongLong(&b_ok, 0x10));
 #else
-	auto parser = reinterpret_cast<DotNetOptionsTree *>(item->text(FILE_LIST_IDX_DOTNET_PARSER).toULong(&b_ok, 0x10));
+	auto parser = reinterpret_cast<DotNetOptionsTree*>(item->text(FILE_LIST_IDX_DOTNET_PARSER).toULong(&b_ok, 0x10));
 #endif
 
 	auto wnd = new(std::nothrow) DotNetOptionsWindow(QString("Enter .NET options"), old_options, parser, use_native, framelessParent);
@@ -795,7 +792,7 @@ void GuiMain::dot_net_options()
 
 		item->setText(FILE_LIST_IDX_DOTNET_OPTIONS, dot_net_options);
 		item->setText(FILE_LIST_IDX_DOTNET_ARGUMENT, results[3]);
-	}	
+	}
 
 	if (use_native)
 	{
@@ -809,7 +806,7 @@ void GuiMain::dot_net_options()
 	delete wnd;
 }
 
-bool GuiMain::parse_dot_net_data(QTreeWidgetItem * item, DotNetOptionsTree *& out)
+bool GuiMain::parse_dot_net_data(QTreeWidgetItem* item, DotNetOptionsTree*& out)
 {
 	auto dll_path = item->text(FILE_LIST_IDX_PATH);
 	auto dll_name = item->text(FILE_LIST_IDX_NAME);
@@ -823,13 +820,13 @@ bool GuiMain::parse_dot_net_data(QTreeWidgetItem * item, DotNetOptionsTree *& ou
 
 		return false;
 	}
-	
+
 	ConnectNamedPipe(hPipe, nullptr);
 
 	auto exe_path = g_RootPath + GH_INJ_DOTNET_PARSER;
 	std::wstring CmdLine = L"\"" + exe_path + L"\" \"" + dll_path.toStdWString() + L"\" \"" + pipe_name + L"\"";
 
-	wchar_t * szCmdLine = new(std::nothrow) wchar_t[CmdLine.size() + 1]();
+	wchar_t* szCmdLine = new(std::nothrow) wchar_t[CmdLine.size() + 1]();
 	if (!szCmdLine)
 	{
 		g_print("Memory allocation failed\n");
@@ -844,9 +841,9 @@ bool GuiMain::parse_dot_net_data(QTreeWidgetItem * item, DotNetOptionsTree *& ou
 
 	PROCESS_INFORMATION pi{ 0 };
 	STARTUPINFOW		si{ 0 };
-	si.cb			= sizeof(si);
-	si.dwFlags		= STARTF_USESHOWWINDOW;
-	si.wShowWindow	= SW_HIDE;
+	si.cb = sizeof(si);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_HIDE;
 
 	auto bRet = CreateProcessW(nullptr, szCmdLine, nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr, nullptr, &si, &pi);
 
@@ -890,7 +887,7 @@ bool GuiMain::parse_dot_net_data(QTreeWidgetItem * item, DotNetOptionsTree *& ou
 
 	printf("DATASIZE = %08X\n", DataSize);
 
-	char * raw_data = new(std::nothrow) char[DataSize + 1]();
+	char* raw_data = new(std::nothrow) char[DataSize + 1]();
 	if (!raw_data)
 	{
 		g_print("Memory allocation failed\n");
@@ -917,7 +914,7 @@ bool GuiMain::parse_dot_net_data(QTreeWidgetItem * item, DotNetOptionsTree *& ou
 	DisconnectNamedPipe(hPipe);
 	CloseHandle(hPipe);
 
-	DotNetOptionsTree * new_tree = new(std::nothrow) DotNetOptionsTree();
+	DotNetOptionsTree* new_tree = new(std::nothrow) DotNetOptionsTree();
 	if (!new_tree)
 	{
 		g_print("Memory allocation failed\n");
@@ -934,286 +931,286 @@ bool GuiMain::parse_dot_net_data(QTreeWidgetItem * item, DotNetOptionsTree *& ou
 	return true;
 }
 
-void GuiMain::closeEvent(QCloseEvent * event)
+void GuiMain::closeEvent(QCloseEvent* event)
 {
 	Q_UNUSED(event);
 
 	save_settings();
 }
 
-bool GuiMain::eventFilter(QObject * obj, QEvent * event)
+bool GuiMain::eventFilter(QObject* obj, QEvent* event)
 {
 	switch (event->type())
 	{
-		case QEvent::KeyPress:
+	case QEvent::KeyPress:
+	{
+		if (obj == ui.tree_files)
 		{
-			if (obj == ui.tree_files)
+			auto* keyEvent = static_cast<QKeyEvent*>(event);
+			if (keyEvent->key() == Qt::Key_Delete)
 			{
-				auto * keyEvent = static_cast<QKeyEvent *>(event);
-				if (keyEvent->key() == Qt::Key_Delete)
-				{
-					btn_remove_file();
-				}
-				else if (keyEvent->key() == Qt::Key_Space)
-				{
-					toggleSelected();
-				}
+				btn_remove_file();
 			}
-			else if (obj == ui.txt_pid)
+			else if (keyEvent->key() == Qt::Key_Space)
 			{
-				auto * keyEvent = static_cast<QKeyEvent *>(event);
-				if (keyEvent->key() >= Qt::Key_0 && keyEvent->key() <= Qt::Key_9 || keyEvent->key() == Qt::Key_Backspace || keyEvent->key() == Qt::Key_Delete || keyEvent->key() == Qt::Key_Space)
-				{
-					t_OnUserInput.start(10000);
-				}
-			}
-
-			if (g_Console->is_open() && !framelessParent->isMinimized())
-			{
-				auto * keyEvent = static_cast<QKeyEvent *>(event);
-				if (keyEvent->matches(QKeySequence::Copy) || keyEvent->matches(QKeySequence::Cut))
-				{
-					g_Console->copy_data();
-				}
-				else if (keyEvent->modifiers() & Qt::KeyboardModifier::ControlModifier)
-				{
-					int new_index = DOCK_NONE;
-
-					switch (keyEvent->key())
-					{
-						case Qt::Key_3:
-						case Qt::Key_Right:
-							new_index = DOCK_RIGHT;
-							break;
-
-						case Qt::Key_1:
-						case Qt::Key_Left:
-							new_index = DOCK_LEFT;
-							break;
-						case Qt::Key_5:
-						case Qt::Key_Up:
-							new_index = DOCK_TOP;
-							break;
-
-						case Qt::Key_2:
-						case Qt::Key_Down:
-							new_index = DOCK_BOTTOM;
-							break;
-
-						default:
-							break;
-					}
-
-					bool ignore = false;
-					if ((ui.cmb_proc->hasFocus() || ui.txt_pid->hasFocus()) && (new_index == DOCK_RIGHT || new_index == DOCK_LEFT))
-					{
-						auto pos = 0;
-						auto len = 0;
-
-						if (ui.cmb_proc->hasFocus())
-						{
-							pos = ui.cmb_proc->lineEdit()->cursorPosition();
-							len = ui.cmb_proc->lineEdit()->text().length();							
-						}
-						else
-						{
-							pos = ui.txt_pid->cursorPosition();
-							len = ui.txt_pid->text().length();
-						}
-
-						if (pos != len && new_index == DOCK_RIGHT || pos != 0 && new_index == DOCK_LEFT)
-						{
-							ignore = true;
-						}
-					}
-					
-					if (!ignore && new_index != DOCK_NONE && new_index != g_Console->get_dock_index())
-					{
-						dockIndex = new_index;
-						g_Console->dock(dockIndex);
-
-						return true; //don't send keypress to main gui to not move focus to different control
-					}
-				}				
+				toggleSelected();
 			}
 		}
-		break;
-
-		case QEvent::Resize:
+		else if (obj == ui.txt_pid)
 		{
-			if (obj == ui.tree_files && !framelessParent->isMinimized())
+			auto* keyEvent = static_cast<QKeyEvent*>(event);
+			if (keyEvent->key() >= Qt::Key_0 && keyEvent->key() <= Qt::Key_9 || keyEvent->key() == Qt::Key_Backspace || keyEvent->key() == Qt::Key_Delete || keyEvent->key() == Qt::Key_Space)
 			{
-				if (drag_drop)
+				t_OnUserInput.start(10000);
+			}
+		}
+
+		if (g_Console->is_open() && !framelessParent->isMinimized())
+		{
+			auto* keyEvent = static_cast<QKeyEvent*>(event);
+			if (keyEvent->matches(QKeySequence::Copy) || keyEvent->matches(QKeySequence::Cut))
+			{
+				g_Console->copy_data();
+			}
+			else if (keyEvent->modifiers() & Qt::KeyboardModifier::ControlModifier)
+			{
+				int new_index = DOCK_NONE;
+
+				switch (keyEvent->key())
 				{
-					auto pos = ui.tree_files->header()->pos();
-					pos = ui.tree_files->header()->mapToGlobal(pos);
-					drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
+				case Qt::Key_3:
+				case Qt::Key_Right:
+					new_index = DOCK_RIGHT;
+					break;
+
+				case Qt::Key_1:
+				case Qt::Key_Left:
+					new_index = DOCK_LEFT;
+					break;
+				case Qt::Key_5:
+				case Qt::Key_Up:
+					new_index = DOCK_TOP;
+					break;
+
+				case Qt::Key_2:
+				case Qt::Key_Down:
+					new_index = DOCK_BOTTOM;
+					break;
+
+				default:
+					break;
+				}
+
+				bool ignore = false;
+				if ((ui.cmb_proc->hasFocus() || ui.txt_pid->hasFocus()) && (new_index == DOCK_RIGHT || new_index == DOCK_LEFT))
+				{
+					auto pos = 0;
+					auto len = 0;
+
+					if (ui.cmb_proc->hasFocus())
+					{
+						pos = ui.cmb_proc->lineEdit()->cursorPosition();
+						len = ui.cmb_proc->lineEdit()->text().length();
+					}
+					else
+					{
+						pos = ui.txt_pid->cursorPosition();
+						len = ui.txt_pid->text().length();
+					}
+
+					if (pos != len && new_index == DOCK_RIGHT || pos != 0 && new_index == DOCK_LEFT)
+					{
+						ignore = true;
+					}
+				}
+
+				if (!ignore && new_index != DOCK_NONE && new_index != g_Console->get_dock_index())
+				{
+					dockIndex = new_index;
+					g_Console->dock(dockIndex);
+
+					return true; //don't send keypress to main gui to not move focus to different control
 				}
 			}
 		}
-		break;
+	}
+	break;
 
-		case QEvent::Move:
+	case QEvent::Resize:
+	{
+		if (obj == ui.tree_files && !framelessParent->isMinimized())
 		{
-			if (obj == framelessParent && drag_drop && !framelessParent->isMinimized())
+			if (drag_drop)
 			{
 				auto pos = ui.tree_files->header()->pos();
 				pos = ui.tree_files->header()->mapToGlobal(pos);
 				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
 			}
 		}
-		break;
+	}
+	break;
 
-		case QEvent::WindowActivate:
+	case QEvent::Move:
+	{
+		if (obj == framelessParent && drag_drop && !framelessParent->isMinimized())
 		{
-			if (obj == framelessParent)
-			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
-				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
-			}
+			auto pos = ui.tree_files->header()->pos();
+			pos = ui.tree_files->header()->mapToGlobal(pos);
+			drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
 		}
-		break;
+	}
+	break;
 
-		case QEvent::WindowDeactivate:
+	case QEvent::WindowActivate:
+	{
+		if (obj == framelessParent)
 		{
-			if (obj == framelessParent)
+			auto pos = ui.tree_files->header()->pos();
+			pos = ui.tree_files->header()->mapToGlobal(pos);
+			drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
+		}
+	}
+	break;
+
+	case QEvent::WindowDeactivate:
+	{
+		if (obj == framelessParent)
+		{
+			auto pos = ui.tree_files->header()->pos();
+			pos = ui.tree_files->header()->mapToGlobal(pos);
+			drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
+		}
+	}
+	break;
+
+	case QEvent::ApplicationStateChange:
+	{
+		auto* ascEvent = static_cast<QApplicationStateChangeEvent*>(event);
+		if (ascEvent->applicationState() == Qt::ApplicationState::ApplicationActive && framelessParent->isVisible() && drag_drop)
+		{
+			auto pos = ui.tree_files->header()->pos();
+			pos = ui.tree_files->header()->mapToGlobal(pos);
+
+			if (!framelessParent->isMinimized())
 			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
 				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
 			}
 		}
-		break;
-
-		case QEvent::ApplicationStateChange:
-		{
-			auto * ascEvent = static_cast<QApplicationStateChangeEvent *>(event);
-			if (ascEvent->applicationState() == Qt::ApplicationState::ApplicationActive && framelessParent->isVisible() && drag_drop)
-			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
-
-				if (!framelessParent->isMinimized())
-				{
-					drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
-				}
-			}
-			else
-			{
-				if (framelessParent->isMinimized() && drag_drop)
-				{
-					drag_drop->SetPosition(-1, -1, true, false);
-				}
-				else if (drag_drop)
-				{
-					auto pos = ui.tree_files->header()->pos();
-					pos = ui.tree_files->header()->mapToGlobal(pos);
-					drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
-				}
-			}
-		}
-		break;
-
-		case QEvent::WindowStateChange:
+		else
 		{
 			if (framelessParent->isMinimized() && drag_drop)
 			{
 				drag_drop->SetPosition(-1, -1, true, false);
 			}
-		}
-		break;
-
-		case QEvent::ScreenChangeInternal:
-		case QEvent::WindowChangeInternal:
-		{
-			if (current_dpi != framelessParent->logicalDpiX() && drag_drop)
+			else if (drag_drop)
 			{
-				update_height();
-
-				drag_drop->Close();
-
-				current_dpi = framelessParent->logicalDpiX();
-				dragdrop_size = (int)(30.0f * (float)current_dpi / 96.0f + 0.5f);
-				dragdrop_offset = (int)(10.0f * (float)current_dpi / 96.0f + 0.5f);
-
-				drag_drop->CreateDragDropWindow(reinterpret_cast<HWND>(framelessParent->winId()), dragdrop_size);
-
 				auto pos = ui.tree_files->header()->pos();
 				pos = ui.tree_files->header()->mapToGlobal(pos);
 				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
 			}
 		}
-		break;
+	}
+	break;
 
-		case QEvent::Close:
+	case QEvent::WindowStateChange:
+	{
+		if (framelessParent->isMinimized() && drag_drop)
 		{
-			if (drag_drop)
-			{
-				drag_drop->SetPosition(-1, -1, false, true);
-			}
+			drag_drop->SetPosition(-1, -1, true, false);
+		}
+	}
+	break;
 
-			if (g_Console && (obj == this || obj == framelessParent))
+	case QEvent::ScreenChangeInternal:
+	case QEvent::WindowChangeInternal:
+	{
+		if (current_dpi != framelessParent->logicalDpiX() && drag_drop)
+		{
+			update_height();
+
+			drag_drop->Close();
+
+			current_dpi = framelessParent->logicalDpiX();
+			dragdrop_size = (int)(30.0f * (float)current_dpi / 96.0f + 0.5f);
+			dragdrop_offset = (int)(10.0f * (float)current_dpi / 96.0f + 0.5f);
+
+			drag_drop->CreateDragDropWindow(reinterpret_cast<HWND>(framelessParent->winId()), dragdrop_size);
+
+			auto pos = ui.tree_files->header()->pos();
+			pos = ui.tree_files->header()->mapToGlobal(pos);
+			drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
+		}
+	}
+	break;
+
+	case QEvent::Close:
+	{
+		if (drag_drop)
+		{
+			drag_drop->SetPosition(-1, -1, false, true);
+		}
+
+		if (g_Console && (obj == this || obj == framelessParent))
+		{
+			g_Console->close();
+		}
+	}
+	break;
+
+	case QEvent::MouseButtonPress:
+	{
+		if (obj == ui.lbl_img)
+		{
+			auto* mouseEvent = static_cast<QMouseEvent*>(event);
+
+			if (mouseEvent->buttons() & Qt::MouseButton::LeftButton)
 			{
-				g_Console->close();
+				mouse_pos = ui.lbl_img->mapToGlobal(mouseEvent->pos());
+
+				onMove = true;
 			}
 		}
-		break;
+	}
+	break;
 
-		case QEvent::MouseButtonPress:
+	case QEvent::MouseMove:
+	{
+		if (obj == ui.lbl_img && onMove)
 		{
-			if (obj == ui.lbl_img)
+			auto* mouseEvent = static_cast<QMouseEvent*>(event);
+
+			if (mouseEvent->buttons() & Qt::MouseButton::LeftButton)
 			{
-				auto * mouseEvent = static_cast<QMouseEvent *>(event);
+				auto glb_mousepos = ui.lbl_img->mapToGlobal(mouseEvent->pos());
+				auto delta = glb_mousepos - mouse_pos;
 
-				if (mouseEvent->buttons() & Qt::MouseButton::LeftButton)
+				if (delta.x() || delta.y())
 				{
-					mouse_pos = ui.lbl_img->mapToGlobal(mouseEvent->pos());
+					auto newpos = framelessParent->pos() + delta;
+					mouse_pos = glb_mousepos;
 
-					onMove = true;
+					framelessParent->move(newpos);
 				}
 			}
 		}
-		break;
+	}
+	break;
 
-		case QEvent::MouseMove:
+	case QEvent::MouseButtonRelease:
+	{
+		if (obj == ui.lbl_img && onMove)
 		{
-			if (obj == ui.lbl_img && onMove)
+			auto pos = this->mapToGlobal(QPoint(0, 0));
+			if (pos.y() < 0)
 			{
-				auto * mouseEvent = static_cast<QMouseEvent *>(event);
-
-				if (mouseEvent->buttons() & Qt::MouseButton::LeftButton)
-				{
-					auto glb_mousepos = ui.lbl_img->mapToGlobal(mouseEvent->pos());
-					auto delta = glb_mousepos - mouse_pos;
-
-					if (delta.x() || delta.y())
-					{
-						auto newpos = framelessParent->pos() + delta;
-						mouse_pos = glb_mousepos;
-
-						framelessParent->move(newpos);
-					}
-				}
+				auto old_pos = framelessParent->pos();
+				framelessParent->move(old_pos.x(), old_pos.y() - pos.y() + 1);
 			}
-		}
-		break;
 
-		case QEvent::MouseButtonRelease:
-		{
-			if (obj == ui.lbl_img && onMove)
-			{
-				auto pos = this->mapToGlobal(QPoint(0, 0));
-				if (pos.y() < 0)
-				{
-					auto old_pos = framelessParent->pos();
-					framelessParent->move(old_pos.x(), old_pos.y() - pos.y() + 1);
-				}
-
-				onMove = false;
-			}
+			onMove = false;
 		}
-		break;
+	}
+	break;
 	}
 
 	return QObject::eventFilter(obj, event);
@@ -1227,7 +1224,7 @@ void GuiMain::initSetup()
 
 void GuiMain::toggleSelected()
 {
-	QList<QTreeWidgetItem *> sel = ui.tree_files->selectedItems();
+	QList<QTreeWidgetItem*> sel = ui.tree_files->selectedItems();
 	bool all_selected = true;
 
 	for (auto i : sel)
@@ -1403,7 +1400,7 @@ void GuiMain::cmb_proc_name_change()
 		mod_CmbProcNameModel.setStringList(list);
 
 		index = ui.cmb_proc->findText(QString::fromStdWString(CurrentName), Qt::MatchFixedString);
-	}	
+	}
 
 	ui.cmb_proc->setCurrentIndex(index);
 }
@@ -1443,7 +1440,7 @@ void GuiMain::txt_pid_change()
 	if (index == -1)
 	{
 		ui.cmb_proc->addItem(QString::fromStdWString(CurrentName));
-		
+
 		QStringList list = mod_CmbProcNameModel.stringList();
 		list.sort(Qt::CaseInsensitive);
 		mod_CmbProcNameModel.setStringList(list);
@@ -1535,7 +1532,7 @@ void GuiMain::auto_loop_inject()
 {
 	if (ui.cb_auto->isChecked())
 	{
-		DWORD			pid	= 0;
+		DWORD			pid = 0;
 		ARCHITECTURE	proc_arch = ARCH::NONE;
 
 		if (ui.rb_proc->isChecked() && proc_data_by_name.IsValid())
@@ -1588,14 +1585,14 @@ void GuiMain::auto_loop_inject()
 
 			if (is_dot_net)
 			{
-				auto dot_net_options		= (*it)->text(FILE_LIST_IDX_DOTNET_OPTIONS);
-				auto dot_net_options_list	= dot_net_options.split('!', Qt::SkipEmptyParts);
+				auto dot_net_options = (*it)->text(FILE_LIST_IDX_DOTNET_OPTIONS);
+				auto dot_net_options_list = dot_net_options.split('!', Qt::SkipEmptyParts);
 
 				if (dot_net_options_list.length() != 3)
 				{
 					continue;
 				}
-			}			
+			}
 
 			found = true;
 			break;
@@ -1667,33 +1664,49 @@ void GuiMain::btn_hook_scan_click()
 
 void GuiMain::update_height()
 {
-	bool b1 = ui.fr_cloak->isVisible();
-	bool b2 = ui.fr_adv->isVisible();
+	//setFixedHeight() is equivalent to calling setMinimumHeight() AND
+	//setMaximumHeight() with the same value. That means every subsequent
+	//call to framelessParent->sizeHint() or minimumSizeHint() gets clamped
+	//to whatever the PREVIOUS setFixedHeight() set - the layout's real
+	//preferred size never reaches us. We were always reading the old height
+	//back and locking it in again, so the window never actually shrank.
+	//
+	//Fix: release the clamp first, then measure the unconstrained layout.
+	//centralWidget()->sizeHint() proved reliable in the debug log (it
+	//correctly tracked fr_settings's content-driven size even when
+	//framelessParent's own sizeHint() was stuck at the old fixed value).
+	//The non-content chrome height (banner + frameless border) is the
+	//constant difference between framelessParent's total height and
+	//centralWidget()'s height when they are correctly in sync, which we
+	//compute once rather than hardcoding.
 
-	int targetHeight = Height_small;
+	//release the fixed constraint so the layout can report its real size
+	framelessParent->setMinimumHeight(0);
+	framelessParent->setMaximumHeight(QWIDGETSIZE_MAX);
 
-	if (!b1 && !b2)         targetHeight = Height_small;
-	else if (b1 && !b2)     targetHeight = Height_medium_s;
-	else if (!b1 && b2)     targetHeight = Height_medium_b;
-	else                    targetHeight = Height_big;
+	//flush any pending LayoutRequest events and force a fresh layout pass
+	//so centralWidget()->sizeHint() reflects the current visibility state
+	QCoreApplication::sendPostedEvents(ui.fr_adv, QEvent::LayoutRequest);
+	QCoreApplication::sendPostedEvents(ui.fr_cloak, QEvent::LayoutRequest);
+	QCoreApplication::sendPostedEvents(ui.fr_settings, QEvent::LayoutRequest);
+	QCoreApplication::sendPostedEvents(centralWidget(), QEvent::LayoutRequest);
+	centralWidget()->layout()->activate();
 
-	// Use setMinimumHeight to allow expanding, not fixed height
-	framelessParent->setMinimumHeight(targetHeight);
+	//chrome = the pixels framelessParent contributes outside centralWidget
+	//(banner image, frameless border). Compute it from current geometry
+	//rather than hardcoding so it stays correct if the frameless window
+	//style ever changes.
+	const int chrome_height = framelessParent->height() - centralWidget()->height();
 
-	// Resize to the new minimum if the current window is too small
-	if (framelessParent->height() < targetHeight) {
-		framelessParent->resize(framelessParent->width(), targetHeight);
-	}
+	//centralWidget()->sizeHint() is the reliable, unclamped measurement -
+	//confirmed accurate in debug log even when framelessParent's own
+	//sizeHint() was stuck at the old fixed value.
+	const int required_height = centralWidget()->sizeHint().height() + chrome_height;
 
-	// Force window update
+	framelessParent->setFixedHeight(required_height);
+
+	//force window update beacause it doesn't update properly when decreasing the size after launch but all the other times???
 	framelessParent->move(framelessParent->pos());
-
-	t_Update_DragDrop.start(Height_change_delay);
-
-	if (this->layout()) {
-		this->layout()->activate(); // Forces the layout to re-calculate positions
-	}
-	this->adjustSize(); // Tells the window to shrink-wrap to the new layout
 
 	t_Update_DragDrop.start(Height_change_delay);
 }
@@ -1827,7 +1840,7 @@ void GuiMain::save_settings()
 
 	// Not visible
 	settings.setValue("LASTDIR", lastPathStr);
-	settings.setValue("GEOMETRY", framelessParent->saveGeometry());	
+	settings.setValue("GEOMETRY", framelessParent->saveGeometry());
 
 	settings.endGroup();
 
@@ -1880,7 +1893,7 @@ void GuiMain::load_settings()
 			new_item->setText(FILE_LIST_IDX_DOTNET_ARGUMENT, dot_net_argument);
 		}
 
-		DotNetOptionsTree * new_tree = nullptr;
+		DotNetOptionsTree* new_tree = nullptr;
 
 		if (!parse_dot_net_data(new_item, new_tree))
 		{
@@ -1967,16 +1980,16 @@ void GuiMain::load_settings()
 	//ui.cb_link->setChecked(settings.value("LINK", false).toBool());
 
 	// Process picker
-	proc_state.txtFilter	= settings.value("PROCNAMEFILTER", "").toString();
-	proc_state.cmbArch		= settings.value("PROCESSTYPE", 0).toInt();
-	proc_state.cbSession	= settings.value("CURRENTSESSION", true).toBool();
+	proc_state.txtFilter = settings.value("PROCNAMEFILTER", "").toString();
+	proc_state.cmbArch = settings.value("PROCESSTYPE", 0).toInt();
+	proc_state.cbSession = settings.value("CURRENTSESSION", true).toBool();
 
 	// Info
 	tooltipsEnabled = !settings.value("TOOLTIPSON", true).toBool();
-	consoleOpen		= settings.value("CONSOLE", true).toBool();
-	dockIndex		= settings.value("DOCKINDEX", DOCK_RIGHT).toInt();
-	ignoreUpdate	= settings.value("IGNOREUPDATES", false).toBool();
-	hijackWarning	= settings.value("HIJACKWARNING", true).toBool();
+	consoleOpen = settings.value("CONSOLE", true).toBool();
+	dockIndex = settings.value("DOCKINDEX", DOCK_RIGHT).toInt();
+	ignoreUpdate = settings.value("IGNOREUPDATES", false).toBool();
+	hijackWarning = settings.value("HIJACKWARNING", true).toBool();
 
 	// Not visible
 	lastPathStr = settings.value("LASTDIR", "").toString();
@@ -2005,11 +2018,11 @@ void GuiMain::default_settings()
 	lastPathStr = QApplication::applicationDirPath();
 	ui.cmb_proc->setEditText("Broihon.exe");
 	ui.txt_pid->setText("1337");
-	ignoreUpdate			= false;
-	tooltipsEnabled			= false;
-	dockIndex				= DOCK_RIGHT;
-	proc_state.cbSession	= true;
-	hijackWarning			= true;
+	ignoreUpdate = false;
+	tooltipsEnabled = false;
+	dockIndex = DOCK_RIGHT;
+	proc_state.cbSession = true;
+	hijackWarning = true;
 
 	save_settings();
 }
@@ -2021,36 +2034,36 @@ void GuiMain::cmb_load_change(int index)
 	INJECTION_MODE mode = (INJECTION_MODE)ui.cmb_load->currentIndex();
 	switch (mode)
 	{
-		case INJECTION_MODE::IM_LdrLoadDll:
-			ui.cmb_load->setToolTip("LdrLoadDll is an advanced injection method which uses LdrLoadDll and bypasses LoadLibrary(Ex) hooks.");
-			break;
+	case INJECTION_MODE::IM_LdrLoadDll:
+		ui.cmb_load->setToolTip("LdrLoadDll is an advanced injection method which uses LdrLoadDll and bypasses LoadLibrary(Ex) hooks.");
+		break;
 
-		case INJECTION_MODE::IM_LdrpLoadDll:
-			ui.cmb_load->setToolTip("LdrpLoadDll is an advanced injection method which uses LdrpLoadDll and bypasses LdrLoadDll hooks.");
-			break;
+	case INJECTION_MODE::IM_LdrpLoadDll:
+		ui.cmb_load->setToolTip("LdrpLoadDll is an advanced injection method which uses LdrpLoadDll and bypasses LdrLoadDll hooks.");
+		break;
 
-		case INJECTION_MODE::IM_LdrpLoadDllInternal:
-			ui.cmb_load->setToolTip("LdrpLoadDllInternal is an experimental injection method which uses LdrpLoadDllInternal.");
-			break;
+	case INJECTION_MODE::IM_LdrpLoadDllInternal:
+		ui.cmb_load->setToolTip("LdrpLoadDllInternal is an experimental injection method which uses LdrpLoadDllInternal.");
+		break;
 
-		case INJECTION_MODE::IM_ManualMap:
-			ui.cmb_load->setToolTip("ManualMap is an advanced injection technique which bypasses most module detection methods.");
-			break;
+	case INJECTION_MODE::IM_ManualMap:
+		ui.cmb_load->setToolTip("ManualMap is an advanced injection technique which bypasses most module detection methods.");
+		break;
 
-		default:
-			ui.cmb_load->setToolTip("LoadLibraryExW is the default injection method which simply uses LoadLibraryExW to load the dll(s).");
-			break;
+	default:
+		ui.cmb_load->setToolTip("LoadLibraryExW is the default injection method which simply uses LoadLibraryExW to load the dll(s).");
+		break;
 	}
 
 	if (mode != INJECTION_MODE::IM_ManualMap && ui.fr_adv->isVisible())
 	{
 		ui.fr_adv->setVisible(false);
-		ui.cb_unlink->setEnabled(true);		
+		ui.cb_unlink->setEnabled(true);
 
 		update_height();
 	}
 	else if (mode == INJECTION_MODE::IM_ManualMap && ui.fr_adv->isHidden())
-	{	
+	{
 		ui.fr_adv->setVisible(true);
 		ui.cb_unlink->setEnabled(false);
 		ui.cb_unlink->setChecked(false);
@@ -2069,29 +2082,29 @@ void GuiMain::cmb_create_change(int index)
 
 	switch (method)
 	{
-		case LAUNCH_METHOD::LM_HijackThread:
-			ui.cmb_create->setToolTip("Thread hijacking: Redirects a thread to a codecave to load the dll(s).");
-			break;
+	case LAUNCH_METHOD::LM_HijackThread:
+		ui.cmb_create->setToolTip("Thread hijacking: Redirects a thread to a codecave to load the dll(s).");
+		break;
 
-		case LAUNCH_METHOD::LM_SetWindowsHookEx:
-			ui.cmb_create->setToolTip("SetWindowsHookEx: Adds a hook into the window callback list which then loads the dll(s).");
-			break;
+	case LAUNCH_METHOD::LM_SetWindowsHookEx:
+		ui.cmb_create->setToolTip("SetWindowsHookEx: Adds a hook into the window callback list which then loads the dll(s).");
+		break;
 
-		case LAUNCH_METHOD::LM_KernelCallback:
-			ui.cmb_create->setToolTip("KernelCallback: Replaces the __fnCOPYDATA function from the kernel callback table to execute the codecave which then loads the dll(s).");
-			break;
+	case LAUNCH_METHOD::LM_KernelCallback:
+		ui.cmb_create->setToolTip("KernelCallback: Replaces the __fnCOPYDATA function from the kernel callback table to execute the codecave which then loads the dll(s).");
+		break;
 
-		case LAUNCH_METHOD::LM_QueueUserAPC:
-			ui.cmb_create->setToolTip("QueueUserAPC: Registers an asynchronous procedure call to the process' threads which then loads the dll(s).");
-			break;
+	case LAUNCH_METHOD::LM_QueueUserAPC:
+		ui.cmb_create->setToolTip("QueueUserAPC: Registers an asynchronous procedure call to the process' threads which then loads the dll(s).");
+		break;
 
-		case LAUNCH_METHOD::LM_FakeVEH:
-			ui.cmb_create->setToolTip("FakeVEH: Creates and registers a fake VEH which then loads the dll(s) after a page guard exception has been triggered.");
-			break;
+	case LAUNCH_METHOD::LM_FakeVEH:
+		ui.cmb_create->setToolTip("FakeVEH: Creates and registers a fake VEH which then loads the dll(s) after a page guard exception has been triggered.");
+		break;
 
-		default:
-			ui.cmb_create->setToolTip("NtCreateThreadEx: Creates a simple remote thread to load the dll(s).");
-			break;
+	default:
+		ui.cmb_create->setToolTip("NtCreateThreadEx: Creates a simple remote thread to load the dll(s).");
+		break;
 	}
 
 	if (method == LAUNCH_METHOD::LM_NtCreateThreadEx && !ui.cb_cloak->isEnabled())
@@ -2112,17 +2125,17 @@ void GuiMain::cmb_peh_change(int index)
 	index = ui.cmb_peh->currentIndex();
 	switch (index)
 	{
-		case 0:
-			ui.cmb_peh->setToolTip("Keep PEH: Doesn't modify the PE header of the dll(s).");
-			break;
+	case 0:
+		ui.cmb_peh->setToolTip("Keep PEH: Doesn't modify the PE header of the dll(s).");
+		break;
 
-		case 1:
-			ui.cmb_peh->setToolTip("Erase PEH: Erases the PE header by wrting 0's to it to avoid detections.");
-			break;
+	case 1:
+		ui.cmb_peh->setToolTip("Erase PEH: Erases the PE header by wrting 0's to it to avoid detections.");
+		break;
 
-		default:
-			ui.cmb_peh->setToolTip("Fake PEH: Replaces the PE header with the PE header of the ntdll.dll.");
-			break;
+	default:
+		ui.cmb_peh->setToolTip("Fake PEH: Replaces the PE header with the PE header of the ntdll.dll.");
+		break;
 	}
 }
 
@@ -2203,7 +2216,7 @@ void GuiMain::btn_add_file_dialog()
 		return;
 	}
 
-	for (auto & l : fDialog.selectedFiles())
+	for (auto& l : fDialog.selectedFiles())
 	{
 		add_file_to_list(l, true);
 	}
@@ -2211,7 +2224,7 @@ void GuiMain::btn_add_file_dialog()
 	lastPathStr = QFileInfo(fDialog.selectedFiles().first()).path();
 }
 
-QTreeWidgetItem * GuiMain::add_file_to_list(QString path, bool active, int flag)
+QTreeWidgetItem* GuiMain::add_file_to_list(QString path, bool active, int flag)
 {
 #ifndef _WIN64
 	if (!g_IsNative)
@@ -2252,7 +2265,7 @@ QTreeWidgetItem * GuiMain::add_file_to_list(QString path, bool active, int flag)
 		return Q_NULLPTR;
 	}
 
-	auto * item = new(std::nothrow) QTreeWidgetItem(ui.tree_files);
+	auto* item = new(std::nothrow) QTreeWidgetItem(ui.tree_files);
 	if (item == Q_NULLPTR)
 	{
 		g_print("Failed to create new list item\n");
@@ -2285,7 +2298,7 @@ QTreeWidgetItem * GuiMain::add_file_to_list(QString path, bool active, int flag)
 		btn_options->setFixedHeight(20);
 		btn_options->setIcon(QIcon(":/GuiMain/gh_resource/cog.ico"));
 		btn_options->setToolTip("Configure .NET launch options");
-		
+
 		ui.tree_files->setItemWidget(item, FILE_LIST_IDX_BUTTON_OPTIONS, btn_options);
 		connect(btn_options, SIGNAL(clicked()), this, SLOT(dot_net_options()));
 
@@ -2294,7 +2307,7 @@ QTreeWidgetItem * GuiMain::add_file_to_list(QString path, bool active, int flag)
 			item->setText(FILE_LIST_IDX_FLAG, QString::number(FILE_LIST_FLAG_DOTNET));
 		}
 
-		DotNetOptionsTree * new_tree = nullptr;
+		DotNetOptionsTree* new_tree = nullptr;
 
 		if (!parse_dot_net_data(item, new_tree))
 		{
@@ -2332,7 +2345,7 @@ QTreeWidgetItem * GuiMain::add_file_to_list(QString path, bool active, int flag)
 
 void GuiMain::btn_remove_file()
 {
-	QList<QTreeWidgetItem *> item = ui.tree_files->selectedItems();
+	QList<QTreeWidgetItem*> item = ui.tree_files->selectedItems();
 
 	for (auto i : item)
 	{
@@ -2357,9 +2370,9 @@ void GuiMain::btn_remove_file()
 			b_ok = false;
 
 #ifdef _WIN64
-			auto parser = reinterpret_cast<DotNetOptionsTree *>(i->text(FILE_LIST_IDX_DOTNET_PARSER).toULongLong(&b_ok, 0x10));
+			auto parser = reinterpret_cast<DotNetOptionsTree*>(i->text(FILE_LIST_IDX_DOTNET_PARSER).toULongLong(&b_ok, 0x10));
 #else
-			auto parser = reinterpret_cast<DotNetOptionsTree *>(i->text(FILE_LIST_IDX_DOTNET_PARSER).toULong(&b_ok, 0x10));
+			auto parser = reinterpret_cast<DotNetOptionsTree*>(i->text(FILE_LIST_IDX_DOTNET_PARSER).toULong(&b_ok, 0x10));
 #endif
 
 			SAFE_DELETE(parser);
@@ -2371,7 +2384,7 @@ void GuiMain::btn_remove_file()
 
 void GuiMain::tree_select_file()
 {
-	QList<QTreeWidgetItem *> item = ui.tree_files->selectedItems();
+	QList<QTreeWidgetItem*> item = ui.tree_files->selectedItems();
 
 	if (item.size() == 0)
 	{
@@ -2380,7 +2393,7 @@ void GuiMain::tree_select_file()
 
 	auto path = item[0]->text(FILE_LIST_IDX_PATH);
 	path.replace('/', '\\');
-	
+
 	g_print("Opening explorer: %ls\n", path.toStdWString().c_str());
 
 	//stolen from here:
@@ -2542,21 +2555,21 @@ void GuiMain::inject_file()
 
 	if (inj_data.Mode != INJECTION_MODE::IM_ManualMap)
 	{
-		dot_net_inj_data.ProcessID			= inj_data.ProcessID;
-		dot_net_inj_data.Mode				= inj_data.Mode;
-		dot_net_inj_data.Method				= inj_data.Method;
-		dot_net_inj_data.Flags				= inj_data.Flags;
-		dot_net_inj_data.Timeout			= inj_data.Timeout;
-		dot_net_inj_data.GenerateErrorLog	= inj_data.GenerateErrorLog;
+		dot_net_inj_data.ProcessID = inj_data.ProcessID;
+		dot_net_inj_data.Mode = inj_data.Mode;
+		dot_net_inj_data.Method = inj_data.Method;
+		dot_net_inj_data.Flags = inj_data.Flags;
+		dot_net_inj_data.Timeout = inj_data.Timeout;
+		dot_net_inj_data.GenerateErrorLog = inj_data.GenerateErrorLog;
 	}
 	else if (inj_data.Flags & INJ_MM_MAP_FROM_MEMORY)
-	{		
-		memory_inj_data.ProcessID			= inj_data.ProcessID;
-		memory_inj_data.Mode				= inj_data.Mode;
-		memory_inj_data.Method				= inj_data.Method;
-		memory_inj_data.Flags				= inj_data.Flags;
-		memory_inj_data.Timeout				= inj_data.Timeout;
-		memory_inj_data.GenerateErrorLog	= inj_data.GenerateErrorLog;
+	{
+		memory_inj_data.ProcessID = inj_data.ProcessID;
+		memory_inj_data.Mode = inj_data.Mode;
+		memory_inj_data.Method = inj_data.Method;
+		memory_inj_data.Flags = inj_data.Flags;
+		memory_inj_data.Timeout = inj_data.Timeout;
+		memory_inj_data.GenerateErrorLog = inj_data.GenerateErrorLog;
 	}
 
 	if (!InjLib.LoadingStatus())
@@ -2675,7 +2688,7 @@ void GuiMain::inject_file()
 		}
 	};
 
-	auto copy_string_w_s = [](const std::wstring & src, wchar_t * dest, size_t cb) -> bool
+	auto copy_string_w_s = [](const std::wstring& src, wchar_t* dest, size_t cb) -> bool
 	{
 		auto len = src.length();
 		auto max_len = cb / sizeof(wchar_t) - 1;
@@ -2693,7 +2706,7 @@ void GuiMain::inject_file()
 		return true;
 	};
 
-	auto map_file = [](const INJECTIONDATAW & src, MEMORY_INJECTIONDATA & dest) -> bool
+	auto map_file = [](const INJECTIONDATAW& src, MEMORY_INJECTIONDATA& dest) -> bool
 	{
 		std::ifstream File(src.szDllPath, std::ios::binary | std::ios::ate);
 		if (!File.good())
@@ -2713,7 +2726,7 @@ void GuiMain::inject_file()
 		}
 
 		File.seekg(0, std::ios::beg);
-		File.read(reinterpret_cast<char *>(dest.RawData), dest.RawSize);
+		File.read(reinterpret_cast<char*>(dest.RawData), dest.RawSize);
 		File.close();
 
 		return true;
@@ -2725,7 +2738,7 @@ void GuiMain::inject_file()
 		fromMemory = true;
 	}
 
-	for (const auto & i : items)
+	for (const auto& i : items)
 	{
 		if (!copy_string_w_s(i, inj_data.szDllPath, sizeof(inj_data.szDllPath)))
 		{
@@ -2822,17 +2835,17 @@ void GuiMain::inject_file()
 		++inj_count;
 	}
 
-	for (const auto & i : dot_net_items)
+	for (const auto& i : dot_net_items)
 	{
 		if (!copy_string_w_s(i.first, dot_net_inj_data.szDllPath, sizeof(dot_net_inj_data.szDllPath)))
 		{
 			continue;
 		}
 
-		auto & Namespace	= i.second.at(0);
-		auto & ClassName	= i.second.at(1);
-		auto & MethodName	= i.second.at(2);
-		auto & Argument		= i.second.at(3);
+		auto& Namespace = i.second.at(0);
+		auto& ClassName = i.second.at(1);
+		auto& MethodName = i.second.at(2);
+		auto& Argument = i.second.at(3);
 
 		if (!copy_string_w_s(Namespace, dot_net_inj_data.szNamespace, sizeof(dot_net_inj_data.szNamespace)))
 		{
@@ -2919,7 +2932,7 @@ void GuiMain::inject_file()
 		qApp->exit(EXIT_CODE_CLOSE);
 	}
 
-	for (const auto & i : results)
+	for (const auto& i : results)
 	{
 		g_print_raw(i.c_str());
 	}
@@ -3036,7 +3049,7 @@ void GuiMain::btn_open_help()
 	}
 }
 
-bool GuiMain::get_icon_from_file(const std::wstring & path, UINT size, int index, QPixmap & pixmap)
+bool GuiMain::get_icon_from_file(const std::wstring& path, UINT size, int index, QPixmap& pixmap)
 {
 	HICON icon = NULL;
 	auto hr = SHDefExtractIconW(path.c_str(), index, NULL, &icon, nullptr, size & 0xFFFF);
@@ -3067,7 +3080,7 @@ void GuiMain::btn_generate_shortcut()
 	ARCHITECTURE proc_arch;
 
 	if (ui.rb_pid->isChecked())
-	{		
+	{
 		if (proc_data_by_pid.IsValid())
 		{
 			std::wstring name;
@@ -3104,7 +3117,7 @@ void GuiMain::btn_generate_shortcut()
 	}
 
 	bool is_dot_net = false;
-	bool fileFound	= false;
+	bool fileFound = false;
 	std::vector<std::wstring> DotNetOptions;
 
 	QTreeWidgetItemIterator it(ui.tree_files);
@@ -3141,9 +3154,9 @@ void GuiMain::btn_generate_shortcut()
 
 		if (is_dot_net)
 		{
-			auto dot_net_arg			= (*it)->text(FILE_LIST_IDX_DOTNET_ARGUMENT);
-			auto dot_net_options		= (*it)->text(FILE_LIST_IDX_DOTNET_OPTIONS);
-			auto dot_net_options_list	= dot_net_options.split('!', Qt::SkipEmptyParts);
+			auto dot_net_arg = (*it)->text(FILE_LIST_IDX_DOTNET_ARGUMENT);
+			auto dot_net_options = (*it)->text(FILE_LIST_IDX_DOTNET_OPTIONS);
+			auto dot_net_options_list = dot_net_options.split('!', Qt::SkipEmptyParts);
 
 			if (dot_net_options_list.length() != 3)
 			{
@@ -3196,20 +3209,20 @@ void GuiMain::btn_generate_shortcut()
 
 	switch (ui.cmb_load->currentIndex())
 	{
-		case 1:		shortCut += L" -l 1";	break;
-		case 2:		shortCut += L" -l 2";	break;
-		case 3:		shortCut += L" -l 3";	break;
-		case 4:		shortCut += L" -l 4";	break;
-		default: break;
+	case 1:		shortCut += L" -l 1";	break;
+	case 2:		shortCut += L" -l 2";	break;
+	case 3:		shortCut += L" -l 3";	break;
+	case 4:		shortCut += L" -l 4";	break;
+	default: break;
 	}
 
 	switch (ui.cmb_create->currentIndex())
 	{
-		case 1:		shortCut += L" -s 1"; break;
-		case 2:		shortCut += L" -s 2"; break;
-		case 3:		shortCut += L" -s 3"; break;
-		case 4:		shortCut += L" -s 4"; break;
-		default: break;
+	case 1:		shortCut += L" -s 1"; break;
+	case 2:		shortCut += L" -s 2"; break;
+	case 3:		shortCut += L" -s 3"; break;
+	case 4:		shortCut += L" -s 4"; break;
+	default: break;
 	}
 
 	if (ui.cmb_peh->currentIndex() == 1)	shortCut += L" -peh 1";
@@ -3313,11 +3326,11 @@ void GuiMain::btn_open_console()
 		{
 			old_idx = dockIndex;
 		}
-		
+
 		if (old_idx == -1)
 		{
-			old_idx		= DOCK_RIGHT;
-			dockIndex	= DOCK_RIGHT;
+			old_idx = DOCK_RIGHT;
+			dockIndex = DOCK_RIGHT;
 		}
 
 		g_Console->dock(old_idx);
@@ -3375,7 +3388,7 @@ void GuiMain::setup()
 		}
 
 		msg += "MB.\n\nDo you want to download the files now?";
-		
+
 		if (YesNoBox("PDB Download", msg, framelessParent))
 		{
 			InjLib.StartDownload();
