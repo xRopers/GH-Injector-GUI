@@ -1664,48 +1664,21 @@ void GuiMain::btn_hook_scan_click()
 
 void GuiMain::update_height()
 {
-	//setFixedHeight() is equivalent to calling setMinimumHeight() AND
-	//setMaximumHeight() with the same value. That means every subsequent
-	//call to framelessParent->sizeHint() or minimumSizeHint() gets clamped
-	//to whatever the PREVIOUS setFixedHeight() set - the layout's real
-	//preferred size never reaches us. We were always reading the old height
-	//back and locking it in again, so the window never actually shrank.
-	//
-	//Fix: release the clamp first, then measure the unconstrained layout.
-	//centralWidget()->sizeHint() proved reliable in the debug log (it
-	//correctly tracked fr_settings's content-driven size even when
-	//framelessParent's own sizeHint() was stuck at the old fixed value).
-	//The non-content chrome height (banner + frameless border) is the
-	//constant difference between framelessParent's total height and
-	//centralWidget()'s height when they are correctly in sync, which we
-	//compute once rather than hardcoding.
-
-	//release the fixed constraint so the layout can report its real size
 	framelessParent->setMinimumHeight(0);
 	framelessParent->setMaximumHeight(QWIDGETSIZE_MAX);
 
-	//flush any pending LayoutRequest events and force a fresh layout pass
-	//so centralWidget()->sizeHint() reflects the current visibility state
 	QCoreApplication::sendPostedEvents(ui.fr_adv, QEvent::LayoutRequest);
 	QCoreApplication::sendPostedEvents(ui.fr_cloak, QEvent::LayoutRequest);
 	QCoreApplication::sendPostedEvents(ui.fr_settings, QEvent::LayoutRequest);
 	QCoreApplication::sendPostedEvents(centralWidget(), QEvent::LayoutRequest);
 	centralWidget()->layout()->activate();
 
-	//chrome = the pixels framelessParent contributes outside centralWidget
-	//(banner image, frameless border). Compute it from current geometry
-	//rather than hardcoding so it stays correct if the frameless window
-	//style ever changes.
 	const int chrome_height = framelessParent->height() - centralWidget()->height();
 
-	//centralWidget()->sizeHint() is the reliable, unclamped measurement -
-	//confirmed accurate in debug log even when framelessParent's own
-	//sizeHint() was stuck at the old fixed value.
 	const int required_height = centralWidget()->sizeHint().height() + chrome_height;
 
 	framelessParent->setFixedHeight(required_height);
 
-	//force window update beacause it doesn't update properly when decreasing the size after launch but all the other times???
 	framelessParent->move(framelessParent->pos());
 
 	t_Update_DragDrop.start(Height_change_delay);
