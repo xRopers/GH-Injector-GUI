@@ -1,6 +1,6 @@
 # Qt GH DLL Injector Graphical User Interface
 
-This repository hosts a customized frontend for the official [Guided Hacking DLL Injector](https://guidedhacking.com). This version is updated to .NET 10. The project files use the **v145 toolset (Visual Studio 2026)**. The `Release | x64` configuration builds against **Qt 6.11.1**, while the `Debug`, `Release | x86` and `Static` configurations still reference **Qt 5.15.2** (see [Which Qt version do I need?](#which-qt-version-do-i-need)).
+This repository hosts a customized frontend for the official [Guided Hacking DLL Injector](https://guidedhacking.com). This version is updated to .NET 10. The project files use the **v145 toolset (Visual Studio 2026)**. The `Debug | x64` and `Release | x64` configurations build against **Qt 6.11.1**, while the `x86` and `Static` configurations still reference **Qt 5.15.2** (see [Which Qt version do I need?](#which-qt-version-do-i-need)).
 
 ## 📌 Project History & Evolution
 The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage](https://guidedhacking.com) and [Multikill](https://github.com) developed the initial framework for this modern Qt-based interface. Over the subsequent five years, Broihon has continually updated, maintained, and enhanced the codebase.
@@ -28,14 +28,13 @@ The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage
 
 ### 2. Qt Framework Installation
 *   Acquire the [Qt Online Installer](https://qt.io).
-*   Add **Qt 6.11.1 -> MSVC 2022 64-bit** (installs to `C:\Qt\6.11.1\msvc2022_64`). Required for `Release | x64`; the post-build `windeployqt` step uses this exact path.
-*   Add **Qt 5.15.2 -> MSVC 2019 32-bit** and **MSVC 2019 64-bit** if you want to build the `Debug`, `Release | x86` or `Static` configurations.
+*   Add **Qt 6.11.1 -> MSVC 2022 64-bit** (installs to `C:\Qt\6.11.1\msvc2022_64`). Required for the x64 `Debug` and `Release` configurations; the post-build `windeployqt` step uses this exact path.
+*   Add **Qt 5.15.2 -> MSVC 2019 32-bit** only if you want to build the `Debug | x86` or `Release | x86` configurations (Qt 6 has no official 32-bit Windows build). The `Static` configurations use the static Qt 5.15.2 build from step 4.
 
 #### Which Qt version do I need?
 | Configuration | Qt install name in the project | Qt version |
 |---|---|---|
-| Release \| x64 | `6.11.1_msvc2022_64` | 6.11.1 |
-| Debug \| x64 | `5.15.2_x64` | 5.15.2 |
+| Debug / Release \| x64 | `6.11.1_msvc2022_64` | 6.11.1 |
 | Debug / Release \| x86 | `5.15.2_x86` | 5.15.2 |
 | Static \| x64 / x86 | `5.15.2_static` | 5.15.2 (static build) |
 
@@ -50,11 +49,10 @@ The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage
 1.  Navigate via the top menu bar: **Qt VS Tools** -> **Qt Options** -> **Add**. Provide your compiler-specific installation paths:
     *   `C:\Qt\6.11.1\msvc2022_64` (name it `6.11.1_msvc2022_64`)
     *   `C:\Qt\5.15.2\msvc2019` (or newer MSVC target folders)
-    *   `C:\Qt\5.15.2\msvc2019_64`
     *   `C:\Qt\5.15.2\qt-5.15.2-static-msvc2019-x86_64`
 2.  Open the project properties: **Project** -> **Properties** -> **Qt Project Settings** -> **Qt Installation**. Map the target architectures based on your active toolset:
     *   **x86** target -> Select your default MSVC environment
-    *   **x64** target -> Select your 64-bit MSVC environment
+    *   **x64** target -> Select the Qt 6.11.1 install (`6.11.1_msvc2022_64`)
     *   **x64_static** target -> Select your static MSVC build environment
 3.  Restart your Visual Studio IDE instance to refresh IntelliSense.
 4.  Compile and build the solution.
