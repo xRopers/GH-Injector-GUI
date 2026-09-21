@@ -146,7 +146,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
-    <QtInstall>5.15.2_x64</QtInstall>
+    <QtInstall>6.11.1_msvc2022_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="QtSettings">
     <QtInstall>5.15.2_x86</QtInstall>
@@ -263,7 +263,8 @@
     </ClCompile>
     <Link />
     <PostBuildEvent>
-      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
+      <Command>set PATH=C:\Qt\6.11.1\msvc2022_64\bin;%PATH%
+"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" --debug --verbose 1 "$(TargetDir)$(TargetName).exe"</Command>
     </PostBuildEvent>
     <Link>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>

@@ -1,6 +1,6 @@
 # Qt GH DLL Injector Graphical User Interface
 
-This repository hosts a customized frontend for the official [Guided Hacking DLL Injector](https://guidedhacking.com). This specific version is fully compatible with MSVC 2019, MSVC 2022, MSVC 2026, and Qt version 6.11.1 and updated to DOTNet 10.
+This repository hosts a customized frontend for the official [Guided Hacking DLL Injector](https://guidedhacking.com). This version is updated to .NET 10. The project files use the **v145 toolset (Visual Studio 2026)**. The `Debug | x64` and `Release | x64` configurations build against **Qt 6.11.1**, while the `x86` and `Static` configurations still reference **Qt 5.15.2** (see [Which Qt version do I need?](#which-qt-version-do-i-need)).
 
 ## 📌 Project History & Evolution
 The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage](https://guidedhacking.com) and [Multikill](https://github.com) developed the initial framework for this modern Qt-based interface. Over the subsequent five years, Broihon has continually updated, maintained, and enhanced the codebase.
@@ -23,12 +23,20 @@ The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage
 ## 🛠️ Compilation & Build Instructions
 
 ### 1. IDE Setup
-*   Download and install [Visual Studio 2019, 2022, or 2026](https://microsoft.com).
+*   Download and install [Visual Studio 2026](https://visualstudio.microsoft.com) with the *Desktop development with C++* workload. The projects use `PlatformToolset` v145; to build with an older Visual Studio, retarget the toolset in the project properties first.
+*   Clone with submodules (the injector library is a submodule): `git clone --recurse-submodules <repo-url>`, or run `git submodule update --init` in an existing clone.
 
 ### 2. Qt Framework Installation
 *   Acquire the [Qt Online Installer](https://qt.io).
-*   Add **Qt 5.15.2 -> MSVC 2019/2022/2026 32-bit** to your installation components.
-*   Add **Qt 5.15.2 -> MSVC 2019/2022/2026 64-bit** to your installation components.
+*   Add **Qt 6.11.1 -> MSVC 2022 64-bit** (installs to `C:\Qt\6.11.1\msvc2022_64`). Required for the x64 `Debug` and `Release` configurations; the post-build `windeployqt` step uses this exact path.
+*   Add **Qt 5.15.2 -> MSVC 2019 32-bit** only if you want to build the `Debug | x86` or `Release | x86` configurations (Qt 6 has no official 32-bit Windows build). The `Static` configurations use the static Qt 5.15.2 build from step 4.
+
+#### Which Qt version do I need?
+| Configuration | Qt install name in the project | Qt version |
+|---|---|---|
+| Debug / Release \| x64 | `6.11.1_msvc2022_64` | 6.11.1 |
+| Debug / Release \| x86 | `5.15.2_x86` | 5.15.2 |
+| Static \| x64 / x86 | `5.15.2_static` | 5.15.2 (static build) |
 
 ### 3. Visual Studio Integration
 *   Download and integrate the [Qt VS Tools extension](https://visualstudio.com) compatible with your version of Visual Studio.
@@ -39,20 +47,20 @@ The original frontend for the GH Injector was built using AutoIt. In 2020, [Kage
 
 ### 5. Configuring Visual Studio Environment
 1.  Navigate via the top menu bar: **Qt VS Tools** -> **Qt Options** -> **Add**. Provide your compiler-specific installation paths:
+    *   `C:\Qt\6.11.1\msvc2022_64` (name it `6.11.1_msvc2022_64`)
     *   `C:\Qt\5.15.2\msvc2019` (or newer MSVC target folders)
-    *   `C:\Qt\5.15.2\msvc2019_64`
     *   `C:\Qt\5.15.2\qt-5.15.2-static-msvc2019-x86_64`
 2.  Open the project properties: **Project** -> **Properties** -> **Qt Project Settings** -> **Qt Installation**. Map the target architectures based on your active toolset:
     *   **x86** target -> Select your default MSVC environment
-    *   **x64** target -> Select your 64-bit MSVC environment
+    *   **x64** target -> Select the Qt 6.11.1 install (`6.11.1_msvc2022_64`)
     *   **x64_static** target -> Select your static MSVC build environment
 3.  Restart your Visual Studio IDE instance to refresh IntelliSense.
 4.  Compile and build the solution.
 
 ### 6. Linking the Injector Library
-1.  Clone or download the [GH-Injector-Library](https://github.com).
-2.  In the library project settings, update the C++ Language Standard compiler flag to `std:c++20` (or `std:c++latest` for newer compilers).
-3.  Compile the library files and transfer the compiled binaries directly into this project's folder directory.
+1.  The library lives in the `GH Injector Library` submodule (your fork of [GuidedHacking-Injector](https://github.com/xRopers/GuidedHacking-Injector)); make sure it is checked out (see step 1). The library projects are part of this solution.
+2.  The library projects already set the C++ language standard to `stdcpp20`; no change is needed.
+3.  Build the library and place its binaries next to the GUI executable. The GUI loads the injection library at runtime with `LoadLibraryW`.
 
 ## ✨ Core Application Features
 *   **Advanced Drag & Drop:** Custom drag-and-drop mechanism engineered to successfully bypass UIPI restrictions.
