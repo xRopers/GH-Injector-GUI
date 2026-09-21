@@ -146,7 +146,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
-    <QtInstall>5.15.2_x64</QtInstall>
+    <QtInstall>6.11.1_msvc2022_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="QtSettings">
     <QtInstall>5.15.2_x86</QtInstall>
