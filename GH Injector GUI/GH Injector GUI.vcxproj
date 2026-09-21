@@ -263,7 +263,8 @@
     </ClCompile>
     <Link />
     <PostBuildEvent>
-      <Command>"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" "$(TargetDir)$(TargetName).exe"&lt;different options&gt;</Command>
+      <Command>set PATH=C:\Qt\6.11.1\msvc2022_64\bin;%PATH%
+"C:\Qt\6.11.1\msvc2022_64\bin\windeployqt.exe" --debug --verbose 1 "$(TargetDir)$(TargetName).exe"</Command>
     </PostBuildEvent>
     <Link>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
